@@ -1,0 +1,32 @@
+name: Almost-there
+services:
+    frontend:
+        build: ./
+        container_name: php
+        volumes:
+            - ./:/var/www/html/
+        ports:
+            - "127.0.0.1:8546:80"
+        networks:
+            - connector
+
+    backend:
+        build: ./database
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: password
+        networks:
+            - connector
+
+    phpmyadmin:
+        image: phpmyadmin:5.2.3-apache
+        container_name: phpmyadmin
+        environment:
+            PMA_HOST: backend
+        ports:
+            - "127.0.0.1:7000:80"
+        networks:
+            - connector
+
+networks:
+    connector:
